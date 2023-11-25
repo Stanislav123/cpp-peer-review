@@ -3,50 +3,67 @@
 
 using namespace std;
 
-template <typename DateTime>
-void CheckDateTimeValidity(const DateTime& dt) {
-    if (dt.year < 1) {
-        throw domain_error("year is too small"s);
+
+void CheckYear(int year){
+    if (year < 1) {
+        domain_error("year is too small"s);
     }
-    if (dt.year > 9999) {
-        throw domain_error("year is too big"s);
+    if (year > 9999) {
+        domain_error("year is too big"s);
     }
 
-    if (dt.month < 1) {
+}
+
+void CheckMonth(int month){    
+    if (month < 1) {
         throw domain_error("month is too small"s);
     }
-    if (dt.month > 12) {
+
+    if (month > 12) {
         throw domain_error("month is too big"s);
     }
+}
 
-    const bool is_leap_year = (dt.year % 4 == 0) && !(dt.year % 100 == 0 && dt.year % 400 != 0);
+void CheckDay(int day, int month){
     const array month_lengths = { 31, 28 + is_leap_year, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-    if (dt.day < 1) {
+    if (day < 1) {
         throw domain_error("day is too small"s);
     }
-    if (dt.day > month_lengths[dt.month - 1]) {
+    if (day > month_lengths[month - 1]) {
         throw domain_error("day is too big"s);
     }
+}
 
-    if (dt.hour < 0) {
+void CheckHour(int hour){
+    if (hour < 0 ) {
         throw domain_error("hour is too small"s);
     }
-    if (dt.hour > 23) {
+    if (hour > 23) {
         throw domain_error("hour is too big"s);
     }
-
-    if (dt.minute < 0) {
-        throw domain_error("minute is too small"s);
-    }
-    if (dt.minute > 59) {
-        throw domain_error("minute is too big"s);
-    }
-
-    if (dt.second < 0) {
-        throw domain_error("second is too small");
-    }
-    if (dt.second > 59) {
-        throw domain_error("second is too big"s);
-    }
 }
+
+void CheckMinuteAndSecond(int minute, int second){
+    f (minute < 0 || second < 0 ) {
+        throw domain_error("minute or second is too small"s);
+    }
+    if (minute > 59 || second > 59) {
+        throw domain_error("minute or second is too big"s);
+    }
+
+}
+
+void CheckDateTimeValidity(const DateTime& dt) {
+
+    CheckYear(dt.year);
+    
+    CheckMonth(dt.month); 
+
+    CheckDay(dt.day, dt.month);   
+
+    CheckHour(dt.hour);
+
+    CheckMinuteAndSecond(dt.minute, dt.second);
+}
+
+ 
